@@ -1,4 +1,4 @@
-joueur
+
 #include <stdio.h>
 #include <stdlib.h>
 #include<stdbool.h>
@@ -100,7 +100,7 @@ joueur* deq(struct queue *f) {
     return j;
 }
 
-// /* ===================== LISTE ===================== */
+//LISTE========================================== 
 
 // void initListe(Liste *l) {
 //     l->head = NULL;
@@ -133,15 +133,15 @@ void afficherListe(Liste *l) {
     printf("\n");
 }
 
-joueur* jouerPartie1(joueur *j1, joueur *j2, int numPartie) {
+joueur* Partie1(joueur *j1, joueur *j2, int numPartie) {
     j1->score = j2->score = 0;
 
     printf(" partie numero %d", numPartie);
     printf("%s VS %s\n", j1->name, j2->name);
     int tours = 0;
     while (abs(j1->score - j2->score) < 3 && tours < 12) {
-        int v1 = rand() % 100000 + 1;
-        int v2 = rand() % 100000 + 1;
+        int v1 = rand() % 100000 + 1; //generation du nombre de j1
+        int v2 = rand() % 100000 + 1;// generation du nombre de j2
 
         if (sommeChiffres(v1) % 5 == 0) j1->score++;
         if (sommeChiffres(v2) % 5 == 0) j2->score++;
@@ -164,7 +164,42 @@ joueur* jouerPartie1(joueur *j1, joueur *j2, int numPartie) {
  }
 
 }
+joueur* Partie2(joueur *j1, joueur *j2, int numPartie) {
+    j1->score = 0;
+    j2->score = 0;
 
+    printf("partie numero %d", numPartie);
+    printf("%s VS %s\n", j1->name, j2->name);
+    int tours = 0;
+    while (abs(j1->score - j2->score) < 3 && tours < 16) {
+        int a = rand() % 900 + 100;
+        int b = rand() % 900 + 100;
+
+        int g = pgcd(a, b);
+        int temp = g;
+        bool ok = true;
+
+        while (temp > 0 && !ok) {
+            int d = temp % 10;
+            if (chiffrePresent(a, d) || chiffrePresent(b, d))
+                ok = false;
+            temp /= 10;
+        }
+
+        if (ok) j1->score++;
+        else j2->score++;
+
+        tours++;
+    }
+
+    printf("Score final : %s=%d | %s=%d\n",
+           j1->nom, j1->scorePartie,
+           j2->nom, j2->scorePartie);
+
+    if (j1->scorePartie > j2->scorePartie) return j1;
+    if (j2->scorePartie > j1->scorePartie) return j2;
+    return NULL;
+}
 
 
 
